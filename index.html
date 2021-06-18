@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>3. DN :: OIS 2020/2021</title>
+  <link href="knjiznice/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding-top: 70px;
+    }
+    
+  </style>
+	</style><link rel="icon" href="./favicon.png"/>
+  <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
+  <script src="knjiznice/js/bootstrap.min.js"></script>
+  <script src="knjiznice/js/koda.js"></script>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</head>
+<body>
+
+  <!-- ZAČETEK: Menujska vrstica na vrhu spletne strani -->
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menujska-vrstica">
+          <span class="sr-only">Prikaži menu</span>
+          <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+        </button>
+        <!-- ZAČETEK: Ime vaše aplikacije -->
+        <a class="navbar-brand" href="index.html">MonkeGym</a>
+        <!-- KONEC: Ime vaše aplikacije -->
+      </div>
+      <div class="collapse navbar-collapse" id="menujska-vrstica">
+        <ul class="nav navbar-nav">
+          <li><a href="opis.html">Opis ideje</a></li>
+          <li><a href="nacrt.html">Načrt informacijske rešitve</a></li>
+          <li><a href="#" onclick="generirajPodatke()">Generiranje podatkov</a></li>
+          <li><a href="https://ropsten.etherscan.io/address/0x2a6ca18265d28b4a5c4fbb60dafa7d301f45e05d" target="_blank">Blockchain certifikat kakovosti</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- KONEC: Menujska vrstica na vrhu spletne strani -->
+
+  <!-- ZAČETEK: Vsebina aplikacije -->
+  <div class="container">
+    <div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-lg-8 col-md-8 col-sm-8"><b>Kreiraj EHR zapis</b> za novega bolnika</div>
+							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiPredlogoBolnika"><option value=""></option></select></div>
+						</div>
+					</div>
+					<div class="panel-body" id="dodajanjeNovPacient">
+            <span class="label label-success">Ime</span><input id="kreirajIme" type="text" class="form-control input-mini" placeholder="Matjaž">
+						<span class="label label-success">Priimek</span><input id="kreirajPriimek" type="text" class="form-control" placeholder="Kovanč">
+						<span class="label label-success">Datum rojstva</span><input id="kreirajDatumRojstva" type="text" class="form-control" placeholder="1977-06-23">
+            <div id="dodanPacient"></div>
+						<button type="button" style="margin-top:3px" class="btn btn-primary btn-sm" onclick="novPacient()">Dodaj osnovne podatke o bolniku</button><span id="kreirajSporocilo"></span>
+				  </div>
+        </div>
+			</div>
+      <div class="col-lg-6 col-md-6 col-sm-6">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-lg-8 col-md-8 col-sm-8"><b>Preberi EHR zapis</b> obstoječega bolnika</div>
+							<div class="col-lg-4 col-md-4 col-sm-4"></div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<span class="label label-success">EHR ID</span><input id="preberiEHRid" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
+						<button type="button" style="margin-top:3px" class="btn btn-primary btn-sm" onclick="preberiEHR()">Preberi osnovne podatke o bolniku</button><span id="preberiSporocilo"></span>
+            <div id="preberiEHRdiv"></div>
+				  </div>
+				</div>
+			</div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-lg-8 col-md-8 col-sm-8"><b>Vnos</b> meritve <b>vitalnih znakov</b> bolnika</div>
+							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="vitalniZnaki"><option value=""></option></select></div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<span class="label label-success">EHR ID</span><input id="ehrZaVZ" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
+            <span class="label label-success">Telesna višina</span><div class="input-group"><input id="visina" type="text" class="form-control input-mini" placeholder="185"><span class="input-group-addon">cm</span></div>
+						<span class="label label-success">Telesna teža</span><div class="input-group"><input id="teza" type="text" class="form-control input-mini" placeholder="80.00"><span class="input-group-addon">kg</span></div>
+						<span class="label label-success">Telesna temperatura</span><div class="input-group"><input id="temperatura" type="text" class="form-control input-mini" placeholder="36.50"><span class="input-group-addon">°C</span></div>
+						<span class="label label-success">Simptomi</span><input id="simptomi" type="text" class="form-control input-mini" placeholder="Kašljanje, težko dihanje...">
+            <div id="dodajMeritve"></div>
+						<button type="button" style="margin-top:3px" class="btn btn-primary btn-sm" onclick="vnosMeritve()">Dodaj meritve vitalnih znakov</button><span id="dodajMeritveVitalnihZnakovSporocilo"></span>
+				  	</div>
+				</div>
+			</div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+          <select id="selectDrzava" onchange="DrzavaSelect()" class="form-control input-sm">
+            <option>Austria</option>
+            <option>Belgium</option>
+            <option>Bulgaria</option>
+            <option>Croatia</option>
+            <option>Cyprus</option>
+            <option>Czechia</option>
+            <option>Denmark</option>
+            <option>Estonia</option>
+            <option>Finland</option>
+            <option>France</option>
+            <option>Germany</option>
+            <option>Greece</option>
+            <option>Hungary</option>
+            <option>Ireland</option>
+            <option>Italy</option>
+            <option>Latvia</option>
+            <option>Lithuania</option>
+            <option>Luxembourg</option>
+            <option>Macedonia</option>
+            <option>Malta</option>
+            <option>Netherlands</option>
+            <option>Poland</option>
+            <option>Portugal</option>
+            <option>Romania</option>
+            <option>Slovakia</option>
+            <option>Slovenia</option>
+            <option>Spain</option>
+            <option>Sweden</option>
+          </select>
+          <div id="graf" class="panel-body" style="height: 335px; width: 100%;"></div>
+        </div>
+		</div>
+  </div>
+  <!-- KONEC: Vsebina aplikacije -->
+
+</body>
+</html>
